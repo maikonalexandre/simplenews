@@ -27,6 +27,7 @@ export default function RootLayout({
         <div className="max-w-[1140px] m-auto py-8 px-1 sm:px-2">
           {children}
         </div>
+
         <Footer />
       </body>
     </html>

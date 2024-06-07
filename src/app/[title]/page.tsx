@@ -2,9 +2,8 @@
 import Link from 'next/link'
 
 import { AdvertCard } from '@/components/advertCard'
+import { api } from '@/config/api'
 import { formatDate, generateSlug } from '@/utils'
-
-import { api } from '../api/articles/route'
 
 interface PageParams {
   params: {
@@ -23,10 +22,14 @@ interface Article {
 }
 
 export default async function Page({ params }: PageParams) {
-  const res = await api.get('/top-headlines?sources=techcrunch')
+  const { data } = await api.get('/top-headlines', {
+    params: {
+      country: 'us',
+      pageNumber: 100,
+    },
+  })
 
-  console.log(res.data)
-  const articles = res.data.articles
+  const articles = data.articles
   const article = articles.find(
     (e: Article) => generateSlug(e.title) === params.title,
   )

@@ -2,8 +2,7 @@
 import { AdvertCard } from '@/components/advertCard'
 import { AdvertCardSmall } from '@/components/advertCardSmall'
 import { ArticleCard } from '@/components/articleCard'
-
-import { api } from './api/articles/route'
+import { api } from '@/config/api'
 
 interface Article {
   author?: string
@@ -16,10 +15,14 @@ interface Article {
 }
 
 export default async function Home() {
-  const res = await api.get('/top-headlines?sources=techcrunch')
+  const { data } = await api.get('/top-headlines', {
+    params: {
+      country: 'us',
+      pageNumber: 100,
+    },
+  })
 
-  console.log(res.data)
-  const articles = res.data.articles
+  const articles = data.articles
 
   const asideArticleIndex =
     Math.floor(Math.random() * (articles.length - 5 + 1)) + 5
