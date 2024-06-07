@@ -5,8 +5,8 @@ import { generateSlug } from '@/utils'
 
 interface ArticleProps {
   title: string
-  urlToImage: string | null
-  description: string
+  urlToImage?: string | null
+  description?: string
 }
 
 export const ArticleCard = (article: ArticleProps) => {

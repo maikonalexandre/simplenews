@@ -3,9 +3,24 @@ import { AdvertCard } from '@/components/advertCard'
 import { AdvertCardSmall } from '@/components/advertCardSmall'
 import { ArticleCard } from '@/components/articleCard'
 
-import { articles } from './example.json'
+import { api } from './api/articles/route'
 
-export default function Home() {
+interface Article {
+  author?: string
+  title: string
+  description?: string
+  url: string
+  urlToImage?: string
+  publishedAt: string
+  content?: string
+}
+
+export default async function Home() {
+  const res = await api.get('/top-headlines?sources=techcrunch')
+
+  console.log(res.data)
+  const articles = res.data.articles
+
   const asideArticleIndex =
     Math.floor(Math.random() * (articles.length - 5 + 1)) + 5
 
@@ -43,7 +58,7 @@ export default function Home() {
       </div>
 
       <div className="flex flex-1 p-1 min-h-full flex-wrap gap-8">
-        {articles.map((article, i) => {
+        {articles.map((article: Article, i: number) => {
           if (
             article.description !== '[Removed]' &&
             article.description !== null
@@ -59,8 +74,6 @@ export default function Home() {
           }
           return ''
         })}
-
-        <button>carregar mais</button>
       </div>
 
       <AdvertCard />

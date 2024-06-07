@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { AdvertCard } from '@/components/advertCard'
 import { formatDate, generateSlug } from '@/utils'
 
-import { articles } from '../example.json'
+import { api } from '../api/articles/route'
 
 interface PageParams {
   params: {
@@ -12,8 +12,24 @@ interface PageParams {
   }
 }
 
-export default function Page({ params }: PageParams) {
-  const article = articles.find((e) => generateSlug(e.title) === params.title)
+interface Article {
+  author?: string
+  title: string
+  description?: string
+  url: string
+  urlToImage?: string
+  publishedAt: string
+  content?: string
+}
+
+export default async function Page({ params }: PageParams) {
+  const res = await api.get('/top-headlines?sources=techcrunch')
+
+  console.log(res.data)
+  const articles = res.data.articles
+  const article = articles.find(
+    (e: Article) => generateSlug(e.title) === params.title,
+  )
 
   return (
     <div className="flex justify-between gap-8 animate-fadeIn">
